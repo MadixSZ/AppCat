@@ -10,3 +10,4 @@ data class CatImage(
     val imageUrl: String,
     val createdAt: String? = ""
 )
+

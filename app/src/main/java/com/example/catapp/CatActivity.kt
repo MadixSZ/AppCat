@@ -9,6 +9,7 @@ import com.example.catapp.repository.CatRepository
 import com.example.catapp.viewmodel.CatViewModel
 import com.example.catapp.viewmodel.CatViewModelFactory
 import com.example.catapp.adapter.CatAdapter
+import com.example.catapp.model.CatImage
 
 class CatActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -38,8 +39,10 @@ class CatActivity : ComponentActivity() {
     }
 
     private fun observeData() {
-        viewModel.allCats.observe(this) { cats ->
-            (binding.rvCats.adapter as? CatAdapter)?.updateList(cats)
+        viewModel.allCats.observe(this) { cats: List<CatImage>? ->
+            cats?.let {
+                binding.rvCats.adapter = CatAdapter(it)
+            }
         }
     }
 }
