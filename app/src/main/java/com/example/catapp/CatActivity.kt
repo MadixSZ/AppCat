@@ -1,17 +1,16 @@
 package com.example.catapp
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.catapp.adapter.CatAdapter
 import com.example.catapp.databinding.ActivityMainBinding
 import com.example.catapp.repository.CatRepository
 import com.example.catapp.viewmodel.CatViewModel
 import com.example.catapp.viewmodel.CatViewModelFactory
-import com.example.catapp.adapter.CatAdapter
-import com.example.catapp.model.CatImage
 
-class CatActivity : ComponentActivity() {
+class CatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: CatViewModel by viewModels {
         CatViewModelFactory(CatRepository(applicationContext))
@@ -39,10 +38,8 @@ class CatActivity : ComponentActivity() {
     }
 
     private fun observeData() {
-        viewModel.allCats.observe(this) { cats: List<CatImage>? ->
-            cats?.let {
-                binding.rvCats.adapter = CatAdapter(it)
-            }
+        viewModel.allCats.observe(this) { cats ->
+            (binding.rvCats.adapter as? CatAdapter)?.updateList(cats ?: emptyList())
         }
     }
 }

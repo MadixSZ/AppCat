@@ -12,11 +12,7 @@ class CatAdapter(private var cats: List<CatImage>) : RecyclerView.Adapter<CatAda
     inner class CatViewHolder(val binding: ItemCatBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
-        val binding = ItemCatBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        val binding = ItemCatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CatViewHolder(binding)
     }
 
