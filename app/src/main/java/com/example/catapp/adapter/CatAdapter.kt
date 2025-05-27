@@ -12,12 +12,19 @@ class CatAdapter(private var cats: List<CatImage>) : RecyclerView.Adapter<CatAda
     inner class CatViewHolder(val binding: ItemCatBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
-        val binding = ItemCatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemCatBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return CatViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CatViewHolder, position: Int) {
-        holder.binding.ivCat.load(cats[position].imageUrl)
+        holder.binding.ivCat.load(cats[position].imageUrl) {
+            crossfade(true)
+            error(android.R.drawable.stat_notify_error)
+        }
     }
 
     override fun getItemCount() = cats.size

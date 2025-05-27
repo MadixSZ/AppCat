@@ -7,8 +7,7 @@ import com.example.catapp.database.AppDatabase
 import com.example.catapp.model.CatImage
 import com.example.catapp.network.RetrofitClient
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class CatRepository(context: Context) {
     private val catImageDao = AppDatabase.getDatabase(context).catImageDao()
@@ -21,14 +20,22 @@ class CatRepository(context: Context) {
             val response = apiService.getRandomCat()
             val currentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
+            val fullUrl = if (response.url?.startsWith("/") == true) {
+                "https://cataas.com${response.url}"
+            } else {
+                response.url ?: ""
+            }
+
             val catImage = CatImage(
-                imageUrl = "https://cataas.com${response.url ?: ""}",
+                imageUrl = fullUrl,
                 createdAt = response.createdAt ?: currentTime
             )
+
             catImageDao.insert(catImage)
-            Log.d("DEBUG", "Imagem salva: ${catImage.imageUrl}")
+            Log.d("CatRepository", "Nova imagem salva: $fullUrl")
         } catch (e: Exception) {
-            Log.e("ERROR", "Erro: ${e.message}")
+            Log.e("CatRepository", "Erro ao buscar gato: ${e.message}")
+            throw e
         }
     }
 }

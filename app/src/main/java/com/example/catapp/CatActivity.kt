@@ -13,33 +13,34 @@ import com.example.catapp.viewmodel.CatViewModelFactory
 class CatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: CatViewModel by viewModels {
-        CatViewModelFactory(CatRepository(applicationContext))
+        CatViewModelFactory(CatRepository(application))
     }
+    private lateinit var adapter: CatAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRecyclerView()
-        setupButton()
-        observeData()
+        setupUI()
+        setupObservers()
     }
 
-    private fun setupRecyclerView() {
-        binding.rvCats.layoutManager = LinearLayoutManager(this)
-        binding.rvCats.adapter = CatAdapter(emptyList())
-    }
+    private fun setupUI() {
+        adapter = CatAdapter(emptyList())
+        binding.rvCats.apply {
+            layoutManager = LinearLayoutManager(this@CatActivity)
+            adapter = this@CatActivity.adapter
+        }
 
-    private fun setupButton() {
         binding.btnFetchCat.setOnClickListener {
             viewModel.fetchNewCat()
         }
     }
 
-    private fun observeData() {
+    private fun setupObservers() {
         viewModel.allCats.observe(this) { cats ->
-            (binding.rvCats.adapter as? CatAdapter)?.updateList(cats ?: emptyList())
+            cats?.let { adapter.updateList(it) }
         }
     }
 }

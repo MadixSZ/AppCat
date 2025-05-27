@@ -12,7 +12,11 @@ class CatViewModel(private val repository: CatRepository) : ViewModel() {
 
     fun fetchNewCat() {
         viewModelScope.launch {
-            repository.fetchNewCat()
+            try {
+                repository.fetchNewCat()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }
