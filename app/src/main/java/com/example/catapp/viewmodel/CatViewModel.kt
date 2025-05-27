@@ -19,4 +19,10 @@ class CatViewModel(private val repository: CatRepository) : ViewModel() {
             }
         }
     }
+
+    fun deleteCat(catImage: CatImage) {
+        viewModelScope.launch {
+            repository.deleteCat(catImage)
+        }
+    }
 }

@@ -15,6 +15,8 @@ class CatRepository(context: Context) {
 
     fun getAllCats(): LiveData<List<CatImage>> = catImageDao.getAllCats()
 
+    suspend fun getAllCatsDirect(): List<CatImage> = catImageDao.getAllCatsDirect()
+
     suspend fun fetchNewCat() {
         try {
             val response = apiService.getRandomCat()
@@ -37,5 +39,9 @@ class CatRepository(context: Context) {
             Log.e("CatRepository", "Erro ao buscar gato: ${e.message}")
             throw e
         }
+    }
+
+    suspend fun deleteCat(catImage: CatImage) {
+        catImageDao.deleteCat(catImage)
     }
 }

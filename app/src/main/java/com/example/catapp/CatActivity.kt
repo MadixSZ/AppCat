@@ -1,6 +1,7 @@
 package com.example.catapp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,12 +36,22 @@ class CatActivity : AppCompatActivity() {
 
         binding.btnFetchCat.setOnClickListener {
             viewModel.fetchNewCat()
+            Toast.makeText(this, "Buscando novo gato...", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnViewHistory.setOnClickListener {
+            Toast.makeText(this, "Mostrando todos os gatos salvos", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setupObservers() {
         viewModel.allCats.observe(this) { cats ->
-            cats?.let { adapter.updateList(it) }
+            cats?.let {
+                adapter.updateList(it)
+                if (it.isEmpty()) {
+                    Toast.makeText(this, "Nenhum gato salvo ainda", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }

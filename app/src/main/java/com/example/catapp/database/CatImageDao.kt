@@ -2,6 +2,7 @@ package com.example.catapp.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -14,4 +15,10 @@ interface CatImageDao {
 
     @Query("SELECT * FROM cat_images ORDER BY createdAt DESC")
     fun getAllCats(): LiveData<List<CatImage>>
+
+    @Query("SELECT * FROM cat_images ORDER BY createdAt DESC")
+    suspend fun getAllCatsDirect(): List<CatImage>
+
+    @Delete
+    suspend fun deleteCat(catImage: CatImage)
 }
